@@ -31,10 +31,10 @@
         @apply --layout-fit;
       }
     </style>
-    <iron-list id="yearList" items="[[_years]]">
+      <iron-list id="yearList" items="[[_years]]">
       <template>
         <div class$="year{{_addSelectedClass(selected)}}" on-tap="_tappedYearHandler">
-          [[item.year]]
+            [[item.year]]
         </div>
       </template>
     </iron-list>
@@ -78,11 +78,7 @@
          */
         _years: {
           type: Array,
-          computed: '_computeYears(min, max)',
-          readOnly: true,
-          value: function() {
-            return Date.now().getFullYear;
-          }
+            value: [],
         }
       },
       ready: function() {
@@ -116,6 +112,14 @@
           }.bind(this.$.yearList));
         }
       },
+
+        beforeShow: function() {
+          var years = this._years;
+          this.set( "_years", []);
+          var me = this;
+          me.set( '_years', me._computeYears(me.min, me.max) );
+        },
+
       /**
        * Return the selected class if needed.
        */

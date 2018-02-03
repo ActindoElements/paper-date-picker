@@ -99,7 +99,7 @@ styling:
         width: 168px;
         padding: 16px;
         box-sizing: border-box;
-        color: var(--text-primary-color);
+        color:  white;
         background: var(--default-primary-color);
 
         @apply --layout-vertical;
@@ -245,7 +245,10 @@ styling:
           type: String,
           value: '[,]'
         },
-        _selectedPage: String,
+        _selectedPage: {
+            type: String,
+            observer: "onSelectedPageChanged"
+        },
         _maxYear: {
           type: Number,
           computed: '_getFullYear(maxDate)'
@@ -260,6 +263,13 @@ styling:
       ],
       listeners: {
         'iron-resize': '_resizeHandler'
+      },
+      onSelectedPageChanged: function( newValue )
+      {
+          if( newValue === "chooseYear" )
+          {
+              this.$.yearList.beforeShow();
+          }
       },
       ready: function() {
         this.today = this.$.calendar.today;
