@@ -24,7 +24,7 @@
         vertical-align: middle;
       }
       .selected {
-        color: var(--default-primary-color);
+        color: var(--actindo-primary);
         font-size: 24px;
       }
       iron-list {
@@ -78,9 +78,10 @@
          */
         _years: {
           type: Array,
-            value: [],
+          value: [],
         }
       },
+
       ready: function() {
         // hack for iron-list not to scroll to the first visible index on resize 
         this.$.yearList._resizeHandler = function() {
@@ -93,6 +94,7 @@
           });
         }.bind(this.$.yearList);
       },
+
       /**
        * Scroll in the years list to center the selected year.
        */
@@ -115,7 +117,6 @@
 
         beforeShow: function() {
           var years = this._years;
-          this.set( "_years", []);
           var me = this;
           me.set( '_years', me._computeYears(me.min, me.max) );
         },
@@ -133,9 +134,10 @@
        */
       _computeYears: function(min, max) {
         if (typeof min !== 'number' || typeof max !== 'number') {
-          return;
+            return;
         }
         var years = [];
+
         for (;min <= max; min++) {
           years.push({year: min});
         }
@@ -145,6 +147,8 @@
        * Set 'selected' attribute to the new date's year if it is within range, else set it to null.
        */
       _dateChange: function(date) {
+        var me = this;
+        me.set( '_years', me._computeYears(me.min, me.max) );
         var newYear = date.getFullYear();
         this.selected = this._withinRange(newYear) ? newYear : null;
       },
@@ -170,6 +174,7 @@
         if (selected !== this.date.getFullYear()) {
           // set the year using a new Date instance for notifying to work
           this.date = new Date(this.date.setFullYear(selected));
+          return;
         }
         this._selectYearInList(selected);
       },
